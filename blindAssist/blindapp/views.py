@@ -160,6 +160,11 @@ def upload_image(request):
             # Convert RGBA to RGB
             if image.mode == 'RGBA':
                 image = image.convert('RGB')
+            engine = pyttsx3.init()
+            
+            engine.setProperty("rate", 150)
+            engine.say("Image Captured Successfully! Please wait for the response")
+            engine.runAndWait()
             
             image.save('uploaded_image.jpg')
             mainCode('uploaded_image.jpg') 
