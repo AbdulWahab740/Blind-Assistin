@@ -12,7 +12,7 @@
     
 </head>
 <body>
-    <audio src="{% static 'Assets/unloadAudio.mp3' %}" id="myAudio" autoplay></audio>
+    <!-- <audio src="{% static 'Assets/unloadAudio.mp3' %}" id="myAudio" autoplay></audio> -->
 
     <main id="main" onclick="handleCapture()">
         <!-- Heading -->
@@ -99,6 +99,23 @@
     <script type="module" src="{% static 'JS/script.js' %}"></script>
 
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Fetch text to be spoken
+            fetch('/get_speech_text/')
+                .then(response => response.json())
+                .then(data => {
+                    const text = data.text;
+                    const utterance = new SpeechSynthesisUtterance(text);
+
+                    // Optionally set voice and rate
+                    utterance.voice = speechSynthesis.getVoices().find(voice => voice.name === 'Google UK English Male');
+                    utterance.rate = 1;
+
+                    // Speak the text
+                    speechSynthesis.speak(utterance);
+                })
+                .catch(error => console.error('Error fetching speech text:', error));
+        });
         // ------------------ Camera ------------------
         const webcamElemnt = document.getElementById("webCam")
         const canvasElemnt = document.getElementById("canvas")
@@ -168,14 +185,19 @@ const handleCapture = async () => {
         const response = await fetch('/upload_image/', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': csrftoken // Add CSRF token here
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify({ image: imageDataUrl })
         });
+
         const data = await response.json();
-        const voice = new SpeechSynthesisUtterance(data.message);
-        speechSynthesis.speak(voice);
+        if (data.status === 'success') {
+            const textToSpeak = data.message;
+            const utterance = new SpeechSynthesisUtterance(textToSpeak);
+            window.speechSynthesis.speak(utterance);
+        } else {
+            console.error('Error:', data.message);
+        }
     } catch (error) {
         console.error('Error:', error);
     }
