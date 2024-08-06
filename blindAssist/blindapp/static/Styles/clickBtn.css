@@ -1,0 +1,80 @@
+/* From Uiverse.io by andrew-demchenk0 */ 
+.button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 9px 12px;
+    gap: 8px;
+    height: 40px;
+    width: 172px;
+    border: none;
+    background: #FF2849;
+    border-radius: 20px;
+    cursor: pointer;
+  }
+  
+  .lable {
+    line-height: 22px;
+    font-size: 17px;
+    color: #fff;
+    font-family: sans-serif;
+    letter-spacing: 1px;
+  }
+  
+  .button:hover {
+    background: #e52441;
+  }
+  
+  /* // .button:hover .svg-icon {
+  //   animation: flickering 1s linear infinite;
+  // } */
+  
+  @keyframes flickering {
+    0% {
+      opacity: 1;
+    }
+  
+    50% {
+      opacity: 1;
+    }
+  
+    52% {
+      opacity: 1;
+    }
+  
+    54% {
+      opacity: 0;
+    }
+  
+    56% {
+      opacity: 1;
+    }
+  
+    90% {
+      opacity: 1;
+    }
+  
+    92% {
+      opacity: 0;
+    }
+  
+    94% {
+      opacity: 1;
+    }
+  
+    96% {
+      opacity: 0;
+    }
+  
+    98% {
+      opacity: 1;
+    }
+  
+    99% {
+      opacity: 0;
+    }
+  
+    100% {
+      opacity: 1;
+    }
+  }
