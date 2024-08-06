@@ -12,18 +12,14 @@ import cv2
 import numpy as np
 from ai71 import AI71 
 import pyttsx3
-
+text_content = ''
 # Load the processor and model
 processor = BlipProcessor.from_pretrained("Salesforce/blip-image-captioning-base")
 model = BlipForConditionalGeneration.from_pretrained("Salesforce/blip-image-captioning-base")
 pytesseract.pytesseract.tesseract_cmd = r'tesseract.exe'  # Update this path if needed
 
-def play(text):
-    engine = pyttsx3.init()
-    engine.say(text)
-    engine.runAndWait()
-
 def generateText(text):
+    global text_content
     AI71_API_KEY = "ai71-api-ddbfacf9-004f-415d-8f22-edba215b5af2"
     text_content = " "
     for chunk in AI71(AI71_API_KEY).chat.completions.create(
@@ -36,11 +32,12 @@ def generateText(text):
     ):
         if chunk.choices[0].delta.content:
             print(chunk.choices[0].delta.content, sep="", end="", flush=True)
-            text_content += chunk.choices[0].delta.content
+        text_content += chunk.choices[0].delta.content
     print(text_content)
-    play(text_content)
+    
 
 def mainCode(image):
+    global text_content
     text = ""
 
     try:
@@ -82,12 +79,15 @@ def mainCode(image):
     else:
         text += ". There is no text inside in the image."
     
-    print("Complete text:", text)
     generateText(text)
 
 def home(request):
+    
     return render(request, 'index.html')
-
+def get_speech_text(request):
+    # Text to be spoken by the browser
+    text = "Hello, this app is designed to assist visually impaired users. You can capture an image by clicking anywhere or using voice commands."
+    return JsonResponse({"text": text})
 @csrf_exempt
 def upload_image(request):
     if request.method == 'POST':
@@ -103,16 +103,17 @@ def upload_image(request):
             format, imgstr = image_data.split(';base64,')
             image_data = base64.b64decode(imgstr)
             image = Image.open(io.BytesIO(image_data))
-
             if image.mode == 'RGBA':
                 image = image.convert('RGB')
 
             mainCode(image)
-            return JsonResponse({"status": "success", "message": "Image processed successfully"})
+            print("TT: ",text_content)
+            return JsonResponse({"status": "success", "message": text_content })
         except json.JSONDecodeError:
             return JsonResponse({"status": "error", "message": "Invalid JSON format"}, status=400)
         except ValueError as e:
             return JsonResponse({"status": "error", "message": f"Error processing image data: {str(e)}"}, status=400)
         except Exception as e:
+            print(str(e))
             return JsonResponse({"status": "error", "message": f"An error occurred: {str(e)}"}, status=500)
     return JsonResponse({"status": "error", "message": "Invalid request method"}, status=405)
