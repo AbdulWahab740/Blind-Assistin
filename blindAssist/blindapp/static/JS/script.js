@@ -10,16 +10,16 @@ setTimeout(() => {
 
 // ------------------ audio ------------------
 
-window.addEventListener('load', () => {
-    let voice = "Hello ! How are You ? This app is specially build for blind people . You may capture image by clicking anywhere or by voice."
-    if ('speechSynthesis' in window) {
-    const utterance = new SpeechSynthesisUtterance(voice);
-    window.speechSynthesis.speak(utterance);
-    } else {
-    alert('Sorry, your browser does not support speech synthesis.');
-    }
-    console.log("Speaked")
-   })
+// window.addEventListener('load', () => {
+//     let voice = "Hello ! How are You ? This app is specially build for blind people . You may capture image by clicking anywhere or by voice."
+//     if ('speechSynthesis' in window) {
+//     const utterance = new SpeechSynthesisUtterance(voice);
+//     window.speechSynthesis.speak(utterance);
+//     } else {
+//     alert('Sorry, your browser does not support speech synthesis.');
+//     }
+//     console.log("Speaked")
+//    })
 // ------------------ Voice input ------------------
 
 
