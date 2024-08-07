@@ -16,10 +16,8 @@ main {
 /*  ------------ H1 ------------ */
 
 body {
-    height: 450px;
-    background-image: url("../Assets/bg.jpg");
-    background-repeat: no-repeat;
-    background-size: cover; /* Adjusted to cover the entire background */
+    background: rgb(34, 19, 62);
+ background: linear-gradient(81deg, rgba(34, 19, 62, 1) 0%, rgba(35, 20, 53, 1) 91%); /* Adjusted to cover the entire background */
 }
 
 h1 {
