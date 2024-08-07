@@ -1,0 +1,24 @@
+{
+    "version": 2,
+    "builds": [
+      {
+        "src": "blindAssist/wsgi.py",
+        "use": "@vercel/python",
+        "config": {
+          "maxLambdaSize": "15mb",
+          "runtime": "python3.8"
+        }
+      }
+    ],
+    "routes": [
+      {
+        "src": "/(.*)",
+        "dest": "blindAssist/wsgi.py"
+      }
+    ],
+    "env": {
+      "DJANGO_SETTINGS_MODULE": "your_project_name.settings",
+      "PYTHONUNBUFFERED": "1"
+    }
+  }
+  
